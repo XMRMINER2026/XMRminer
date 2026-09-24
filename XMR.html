@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMRig — Download</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: #050505;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    nav {
+      width: 100%;
+      max-width: 1180px;
+      height: 76px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #0a0a0a;
+      border: 1px solid #303030;
+    }
+
+    .logo-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .github {
+      color: #777;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+    .github:hover { color: #fff; }
+
+    .hero {
+      width: 100%;
+      max-width: 1180px;
+      min-height: calc(100vh - 76px);
+      margin: 0 auto;
+      padding: 65px 28px 90px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      align-items: start;
+      gap: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .label {
+      margin-bottom: 25px;
+      color: #707070;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 800px;
+      color: #fff;
+      font-size: clamp(58px, 8vw, 108px);
+      line-height: 0.86;
+      font-weight: 800;
+      letter-spacing: -7px;
+    }
+
+    h1 span { color: #4f4f4f; }
+
+    .description {
+      max-width: 550px;
+      margin-top: 32px;
+      color: #858585;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 38px;
+      padding: 17px 23px;
+      min-width: 190px;
+      background: #fff;
+      color: #000;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .download:hover {
+      background: #e9e9e9;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+    .download:active { transform: translateY(0); }
+
+    .download-arrow {
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .download.open .download-arrow { transform: rotate(180deg); }
+
+    .right-col {
+      width: 100%;
+      padding-top: 55px;
+    }
+
+    .panel-wrap {
+      width: 100%;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition:
+        max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s ease 0.1s;
+    }
+
+    .panel-wrap.open {
+      max-height: 1400px;
+      opacity: 1;
+    }
+
+    .panel {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #242424;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+    }
+
+    .panel-top {
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #202020;
+    }
+
+    .panel-title {
+      color: #e5e5e5;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .installation {
+      margin-top: 22px;
+      padding: 17px 18px;
+      background: #050505;
+      border: 1px solid #191919;
+      border-radius: 10px;
+      color: #b5b5b5;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .step {
+      min-height: 34px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #131313;
+    }
+
+    .step:last-of-type { border-bottom: none; }
+
+    .number {
+      flex: 0 0 26px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding-top: 1px;
+    }
+
+    .text {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .detail {
+      color: #dcdcdc;
+      font-family: 'Courier New', monospace;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .warning {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(255, 176, 0, 0.07);
+      border: 1px solid rgba(255, 176, 0, 0.3);
+      border-left: 3px solid #ffb000;
+      border-radius: 8px;
+      color: #ffcf6b;
+      font-size: 12.5px;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .warning-icon {
+      flex: 0 0 auto;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .warning strong { color: #ffd98a; }
+
+    /* --- THREE DOWNLOAD BUTTONS (new) --- */
+    .download-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 22px;
+      width: 100%;
+    }
+
+    .panel-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      padding: 18px 23px;
+      background: #fff;
+      color: #000;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+
+    .panel-download:hover {
+      background: #e9e9e9;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .panel-download:active {
+      transform: translateY(0);
+    }
+
+    /* subtle badge for free version 2 */
+    .badge-free {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      background: #2a2a2a;
+      color: #bbb;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-left: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ===== MODAL (code entry) ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 400px;
+      background: #0a0a0a;
+      border: 1px solid #242424;
+      border-radius: 16px;
+      padding: 28px 26px 22px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+      transform: translateY(10px) scale(0.97);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.show .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+
+    .modal-message {
+      color: #888;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #050505;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 17px;
+      letter-spacing: 2px;
+      outline: none;
+      transition: border-color 0.2s ease;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .modal-input:focus {
+      border-color: #666;
+    }
+
+    .modal-hint {
+      color: #555;
+      font-size: 12px;
+      margin-bottom: 20px;
+      min-height: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .modal-btn {
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .modal-btn.cancel {
+      background: transparent;
+      color: #888;
+      border-color: #2a2a2a;
+    }
+
+    .modal-btn.cancel:hover {
+      background: #131313;
+      color: #ccc;
+    }
+
+    .modal-btn.confirm {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .modal-btn.confirm:hover {
+      background: #e9e9e9;
+    }
+
+    .modal-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #111;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1100;
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .bottom {
+      width: 100%;
+      max-width: 1180px;
+      margin: -15px auto 0;
+      padding: 0 28px 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+      color: #414141;
+      font-size: 11px;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 55px;
+        padding-top: 55px;
+      }
+      .right-col { padding-top: 0; }
+      .panel { max-width: 650px; }
+    }
+
+    @media (max-width: 600px) {
+      nav { height: 70px; padding: 0 20px; }
+      .hero {
+        min-height: auto;
+        padding: 55px 20px 70px;
+        gap: 45px;
+      }
+      h1 {
+        font-size: clamp(56px, 18vw, 88px);
+        letter-spacing: -5px;
+      }
+      .description { margin-top: 27px; font-size: 15px; }
+      .download { width: 100%; margin-top: 32px; }
+      .panel { padding: 20px; border-radius: 14px; }
+      .installation { padding: 15px; font-size: 13px; }
+      .text { font-size: 13px; }
+      .panel-download { font-size: 14px; padding: 16px 20px; }
+      .bottom {
+        margin: 0;
+        padding: 0 20px 35px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .github { display: none; }
+      .label { font-size: 10px; letter-spacing: 1.8px; }
+      .panel-title { font-size: 11px; }
+      .installation { padding: 13px; }
+      .step { gap: 8px; }
+      .number { flex-basis: 23px; }
+      .badge-free { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">
+        <!-- XMR Logo SVG -->
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="256" cy="256" r="256" fill="#f26822"/>
+          <path fill="#fff" d="M 80 165 L 150 245 L 150 348 L 210 348 L 210 245 L 256 300 L 302 245 L 302 348 L 362 348 L 362 245 L 432 165 L 432 349 L 362 349 L 362 450 L 302 450 L 256 395 L 210 450 L 150 450 L 150 349 L 80 349 Z" />
+          <path fill="#4c4c4c" d="M 80 349 L 432 349 L 432 450 L 362 450 L 362 349 L 302 349 L 302 450 L 256 395 L 210 450 L 210 349 L 150 349 L 150 450 L 80 450 Z" />
+        </svg>
+      </div>
+      XMRig
+    </div>
+    <a class="github" href="https://github.com/xmrig/xmrig" target="_blank">GitHub ↗</a>
+  </nav>
+
+  <main class="hero">
+    <section>
+      <div class="label">Open-source mining software</div>
+      <h1>XMRig<br><span>Download.</span></h1>
+      <p class="description">
+        A high-performance cryptocurrency miner for modern hardware.
+        Select the appropriate release for your operating system and architecture.
+      </p>
+
+      <button class="download" id="downloadBtn" type="button">
+        <span id="btnLabel">Download Miner</span>
+        <span class="download-arrow">↓</span>
+      </button>
+    </section>
+
+    <div class="right-col">
+      <!-- Panel is revealed after first click -->
+      <div class="panel-wrap" id="panelWrap">
+        <section class="panel">
+          <div class="panel-top">
+            <div class="panel-title">MINER INSTALLATION PROCEDURE</div>
+          </div>
+          <div class="installation">
+
+            <div class="step">
+              <span class="number">1.</span>
+              <span class="text">Install XMR</span>
+            </div>
+
+            <div class="step">
+              <span class="number">2.</span>
+              <span class="text">
+                Create an account
+                <span class="detail">(username &amp; phone number)</span>
+              </span>
+            </div>
+
+            <div class="step">
+              <span class="number">3.</span>
+              <span class="text">Install miner</span>
+            </div>
+
+            <div class="step">
+              <span class="number">4.</span>
+              <span class="text">Allow installation from this source</span>
+            </div>
+
+            <div class="step">
+              <span class="number">5.</span>
+              <span class="text">Grant permissions</span>
+            </div>
+
+            <div class="step">
+              <span class="number">9.</span>
+              <span class="text">Use back button to exit</span>
+            </div>
+
+            <div class="warning">
+              <span>
+                <strong>IMPORTANT:</strong> During the permission steps above,
+                always use the <strong>back button</strong> whenever you want to go
+                back (failure to which your account might not be credited)
+              </span>
+            </div>
+
+            <!-- ⭐ THREE DOWNLOAD BUTTONS -->
+            <div class="download-options">
+              <button class="panel-download" id="premiumDownloadBtn" type="button">
+                <span>Premium download version</span>
+                <span style="font-size:18px;line-height:1;">↓</span>
+              </button>
+              <button class="panel-download" id="freeV1DownloadBtn" type="button">
+                <span>Free download version1</span>
+                <span style="font-size:18px;line-height:1;">↓</span>
+              </button>
+              <button class="panel-download" id="freeV2DownloadBtn" type="button">
+                <span>Free download version 2</span>
+                <span class="badge-free">no code</span>
+                <span style="font-size:18px;line-height:1;">↓</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="bottom">
+    <span>XMRig · Open-source software</span>
+    <span>Verify releases before running</span>
+  </div>
+
+  <!-- CODE ENTRY MODAL (hidden by default) -->
+  <div class="modal-overlay" id="codeModal">
+    <div class="modal">
+      <div class="modal-title" id="modalTitle">Enter download code</div>
+      <div class="modal-message" id="modalMessage">
+        Please enter the code to start your download.
+      </div>
+      <input 
+        type="password" 
+        class="modal-input" 
+        id="codeInput" 
+        placeholder="• • • • • •" 
+        maxlength="6" 
+        inputmode="numeric" 
+        autocomplete="off"
+      >
+      <div class="modal-hint" id="modalHint"></div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="modalCancelBtn" type="button">Cancel</button>
+        <button class="modal-btn confirm" id="modalConfirmBtn" type="button">Verify & Download</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Download started ✓</div>
+
+  <script>
+    // ============================================================
+    //  CONFIGURATION
+    // ============================================================
+    // Set your real download URLs here.
+    // These are placeholders — replace with actual file links.
+    const DOWNLOAD_URLS = {
+      premium: 'https://example.com/xmrig-premium.zip',
+      freeV1: 'https://example.com/xmrig-free-v1.zip',
+      freeV2: 'https://example.com/xmrig-free-v2.zip'
+    };
+
+    // Secret codes — NOT exposed in the UI, only here in JS.
+    const SECRET_CODES = {
+      premium: '212121',
+      freeV1: '212221'
+    };
+
+    
+    const btn = document.getElementById('downloadBtn');
+    const btnLabel = document.getElementById('btnLabel');
+    const panelWrap = document.getElementById('panelWrap');
+    const toast = document.getElementById('toast');
+
+    // Main panel buttons
+    const premiumDownloadBtn = document.getElementById('premiumDownloadBtn');
+    const freeV1DownloadBtn = document.getElementById('freeV1DownloadBtn');
+    const freeV2DownloadBtn = document.getElementById('freeV2DownloadBtn');
+
+    // Modal elements
+    const codeModal = document.getElementById('codeModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalHint = document.getElementById('modalHint');
+    const codeInput = document.getElementById('codeInput');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+    
+    let isOpen = false;
+    let pendingDownloadType = null; // 'premium' or 'freeV1'
+    let toastTimer;
+
+    
+    function showToast(msg, duration = 2500) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    
+    function openPanel() {
+      isOpen = true;
+      panelWrap.classList.add('open');
+      btnLabel.textContent = 'Hide procedure';
+      btn.classList.add('open');
+    }
+
+    function closePanel() {
+      isOpen = false;
+      panelWrap.classList.remove('open');
+      btnLabel.textContent = 'Download release';
+      btn.classList.remove('open');
+    }
+
+    
+    function startDownload(url, label) {
+      if (!url || url.includes('example.com')) {
+        console.warn('⚠️ Placeholder URL detected. Set real download links in DOWNLOAD_URLS.');
+        showToast('⚠️ Set real download URL in code', 3500);
+        return;
+      }
+
+      // Create a temporary anchor and click it
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = ''; // let browser decide filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      showToast(`Download started: ${label} ✓`, 2800);
+    }
+
+    
+    function openCodeModal(type) {
+      pendingDownloadType = type;
+      codeInput.value = '';
+      modalHint.textContent = '';
+
+      if (type === 'premium') {
+        modalTitle.textContent = 'Premium download';
+        modalMessage.textContent = 'Enter the premium access code to start your download.';
+      } else if (type === 'freeV1') {
+        modalTitle.textContent = 'Free version 1 download';
+        modalMessage.textContent = 'Enter the code for Free version 1 to start your download.';
+      }
+
+      codeModal.classList.add('show');
+      // Focus after a short delay for animation
+      setTimeout(() => codeInput.focus(), 150);
+    }
+
+    function closeCodeModal() {
+      codeModal.classList.remove('show');
+      pendingDownloadType = null;
+      codeInput.value = '';
+      modalHint.textContent = '';
+    }
+
+    function verifyAndDownload() {
+      const entered = codeInput.value.trim();
+      const type = pendingDownloadType;
+
+      if (!type) {
+        closeCodeModal();
+        return;
+      }
+
+      const expected = SECRET_CODES[type];
+
+      if (entered === expected) {
+        // Success — close modal and start download
+        closeCodeModal();
+
+        const url = DOWNLOAD_URLS[type];
+        const label = type === 'premium' ? 'Premium' : 'Free version 1';
+        startDownload(url, label);
+      } else {
+        // Wrong code
+        modalHint.textContent = '❌ Incorrect code. Please try again.';
+        modalHint.style.color = '#ff6b6b';
+        codeInput.value = '';
+        codeInput.focus();
+
+        // Shake effect (simple)
+        codeInput.style.transition = 'transform 0.1s';
+        codeInput.style.transform = 'translateX(6px)';
+        setTimeout(() => codeInput.style.transform = 'translateX(-6px)', 80);
+        setTimeout(() => codeInput.style.transform = 'translateX(4px)', 160);
+        setTimeout(() => codeInput.style.transform = 'translateX(-4px)', 240);
+        setTimeout(() => codeInput.style.transform = 'translateX(0)', 320);
+      }
+    }
+
+
+    // Main toggle button
+    btn.addEventListener('click', () => {
+      if (!isOpen) {
+        openPanel();
+      } else {
+        closePanel();
+      }
+    });
+
+    // ----- Premium button (needs code 212121) -----
+    premiumDownloadBtn.addEventListener('click', () => {
+      openCodeModal('premium');
+    });
+
+    // ----- Free version 1 button (needs code 212221) -----
+    freeV1DownloadBtn.addEventListener('click', () => {
+      openCodeModal('freeV1');
+    });
+
+    // ----- Free version 2 button (NO code) -----
+    freeV2DownloadBtn.addEventListener('click', () => {
+      startDownload(DOWNLOAD_URLS.freeV2, 'Free version 2');
+    });
+
+    // ----- Modal cancel -----
+    modalCancelBtn.addEventListener('click', closeCodeModal);
+
+    // ----- Modal confirm -----
+    modalConfirmBtn.addEventListener('click', verifyAndDownload);
+
+    // ----- Enter key in modal input -----
+    codeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        verifyAndDownload();
+      }
+    });
+
+    // ----- Click outside modal to close -----
+    codeModal.addEventListener('click', (e) => {
+      if (e.target === codeModal) {
+        closeCodeModal();
+      }
+    });
+
+    // ----- Escape key to close modal -----
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && codeModal.classList.contains('show')) {
+        closeCodeModal();
+      }
+    });
+
+    window.__xmrigConfig = {
+      DOWNLOAD_URLS,
+      SECRET_CODES
+    };
+
+  </script>
+
+</body>
+</html>
