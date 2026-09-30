@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Android Monero Mining Software</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111111;
+    color: #ffffff;
+}
+
+body {
+    position: fixed;
+    inset: 0;
+}
+
+/* MAIN PAGE */
+.page {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111111;
+}
+
+/* TOP NAVIGATION */
+.top-nav {
+    position: absolute;
+    z-index: 1000;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    background: #111111;
+    border-bottom: 1px solid #292929;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 8px 9px;
+
+    color: #ffffff;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    border-radius: 6px;
+
+    position: relative;
+    z-index: 1001;
+}
+
+.nav-link:active {
+    background: #252525;
+}
+
+/* CONTENT */
+.content {
+    position: absolute;
+
+    top: 64px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100% - 64px);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 15px;
+
+    overflow: hidden;
+}
+
+/* MONERO LOGO */
+.monero-logo {
+    width: 105px;
+    height: 105px;
+
+    margin-bottom: 18px;
+
+    display: block;
+}
+
+/* TITLE */
+h1 {
+    font-size: 30px;
+    line-height: 1.2;
+
+    margin-bottom: 12px;
+
+    font-weight: 700;
+}
+
+.subtitle {
+    max-width: 650px;
+
+    font-size: 15px;
+    line-height: 1.55;
+
+    color: #cfcfcf;
+
+    margin-bottom: 27px;
+}
+
+/* DOWNLOAD BUTTONS */
+.download-buttons {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: nowrap;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 48px;
+
+    min-width: 0;
+    width: 31%;
+
+    padding: 0 8px;
+
+    background: #f26822;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.download-btn:active {
+    opacity: 0.8;
+}
+
+.notice {
+    max-width: 650px;
+
+    margin-top: 23px;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: #999999;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .top-nav {
+        height: 58px;
+        padding: 0 10px;
+    }
+
+    .nav-link {
+        font-size: 13px;
+        padding: 8px 7px;
+    }
+
+    .content {
+        top: 58px;
+        height: calc(100% - 58px);
+        padding: 12px;
+    }
+
+    .monero-logo {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 14px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        line-height: 1.45;
+        max-width: 95%;
+        margin-bottom: 21px;
+    }
+
+    .download-buttons {
+        gap: 7px;
+    }
+
+    .download-btn {
+        height: 45px;
+        width: 31.5%;
+        padding: 0 4px;
+        font-size: 10px;
+    }
+
+    .notice {
+        font-size: 10px;
+        max-width: 95%;
+        margin-top: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+
+        <a href="documentation.html" class="nav-link">
+            Documentation
+        </a>
+
+        <a href="policies.html" class="nav-link">
+            Our Policies
+        </a>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- EMBEDDED XMR / MONERO SYMBOL -->
+        <svg
+            class="monero-logo"
+            viewBox="0 0 200 200"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Monero XMR Logo"
+            role="img"
+        >
+
+            <!-- Orange Monero circle -->
+            <circle
+                cx="100"
+                cy="100"
+                r="96"
+                fill="#FF6600"
+            />
+
+            <!-- Stylized white Monero M -->
+            <path
+                d="
+                M38 148
+                V58
+                L100 119
+                L162 58
+                V148
+                H138
+                V112
+                L100 149
+                L62 112
+                V148
+                Z
+                "
+                fill="#ffffff"
+            />
+
+        </svg>
+
+
+        <!-- TITLE -->
+        <h1>
+            Android Monero Mining Software
+        </h1>
+
+
+        <!-- DESCRIPTION -->
+        <p class="subtitle">
+            Monero mining software designed for Android devices.
+            Download the appropriate package for your device and
+            review the documentation before installation.
+        </p>
+
+
+        <!-- DOWNLOAD BUTTONS -->
+        <div class="download-buttons">
+
+            <a
+                href="https://tinyurl.com/5n8mkxye"
+                class="download-btn"
+                download
+            >
+                Download APK
+            </a>
+
+            <a
+                href="https://tinyurl.com/5n8mkxye"
+                class="download-btn"
+                download
+            >
+                Download ARM64
+            </a>
+
+            <a
+                href="https://tinyurl.com/5n8mkxye"
+                class="download-btn"
+                download
+            >
+                Download ARMv7
+            </a>
+
+        </div>
+
+
+        <!-- NOTICE -->
+        <p class="notice">
+            Please review the documentation and policies before
+            installing or using the software.
+        </p>
+
+    </main>
+
+</div>
+
+</body>
+</html>
